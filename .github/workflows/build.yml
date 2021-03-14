@@ -66,4 +66,5 @@ jobs:
           path: |
             build/zephyr/zmk.hex
             build/zephyr/zmk.uf2
+            build/zephyr/zmk.bin
         continue-on-error: true
