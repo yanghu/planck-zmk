@@ -1,6 +1,11 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 
+#define DEFAULT 0
+#define LOWER   1
+#define RAISE   2
+#define NAV     3
+
 / {
 	keymap {
 		compatible = "zmk,keymap";
@@ -10,13 +15,57 @@
 // |  TAB  |  Q   |  W   |  E   |  R   |  T   |   Y   |  U    |  I   |  O   |   P   | BSPC  |
 // |  ESC  |  A   |  S   |  D   |  F   |  G   |   H   |  J    |  K   |  L   |   ;   |  '    |
 // | SHIFT |  Z   |  X   |  C   |  V   |  B   |   N   |  M    |  ,   |  .   |   /   |  RET  |
-// | FN    | LGUI | LALT | LCTL | LOWR |     SPACE    |  RAIS | LARW | DARW | UARW  |  RARW |
+// | FN    | LGUI | LALT | LCTL | LOWR | SHIFT| SPACE |  RAIS | LARW | DARW | UARW  |  RARW |
 			bindings = <
-	&kp TAB   &kp Q    &kp W    &kp E     &kp R  &kp T  &kp Y     &kp U  &kp I     &kp O    &kp P    &kp DEL
-	&kp ESC   &kp A    &kp S    &kp D     &kp F  &kp G  &kp H     &kp J  &kp K     &kp L    &kp SEMI &kp SQT
-	&kp LSHFT &kp Z    &kp X    &kp C     &kp V  &kp B  &kp N     &kp M  &kp COMMA &kp DOT  &kp BSLH &kp RET
-	&trans    &kp LGUI &kp LALT &kp LCTRL &trans &trans &kp SPACE &trans &kp LEFT  &kp DOWN &kp UP   &kp RIGHT
+	&kp TAB   &kp Q    &kp W    &kp E   &kp R  &kp T  &kp Y     &kp U  &kp I     &kp O    &kp P    &kp BSPC
+	&mt LCTRL ESC   &kp A    &kp S    &kp D     &kp F  &kp G  &kp H     &kp J  &kp K     &kp L    &kp SEMI &kp SQT
+	&kp LSHFT &kp Z    &kp X    &kp C     &kp V  &kp B  &kp N     &kp M  &kp COMMA &kp DOT  &kp SLASH &mt RSHFT RET
+	&trans  &kp LGUI &kp LALT &kp LCTRL &mo LOWER &lt NAV SPACE &mt LSHFT SPACE &mo RAISE &kp LEFT  &kp DOWN &kp UP   &kp RIGHT
 			>;
 		};
+
+		lower_layer {
+// -----------------------------------------------------------------------------------------
+// |  ~   |  !   |  @   |  #   |  $   |  %   |  ^   |  &   |  *  |  (   |   )   | DEL  |
+// |      |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  _   |  +  |  {   |   }   |  PIPE  |
+// |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |      |     |      |   \    |  RET  |
+// | FN   |      |      |      |      |      |      |      |     |      |         |      | 
+			bindings = <
+	&kp TILDE &kp EXCL &kp AT_SIGN &kp HASH  &kp DOLLAR  &kp PRCNT  &kp CARET  &kp AMPERSAND  &kp ASTERISK &kp LPAR &kp RPAR &kp DEL
+	&trans    &kp F1   &kp F2      &kp F3    &kp F4      &kp F5     &kp F6    &kp UNDERSCORE  &kp PLUS    &kp LEFT_BRACE  &kp RIGHT_BRACE &kp PIPE
+	&trans    &kp F7   &kp F8      &kp F9    &kp F10     &kp F11    &kp F12   &trans          &trans      &trans	&kp BACKSLASH  &kp RET
+	&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  
+			>;
+		};
+
+
+		raise_layer {
+// -----------------------------------------------------------------------------------------
+// |  `   |  1   |  2   |  3   |  4   |  5   |  6   |  7   |  8  |  9   |   0   |        |
+// |      |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |  -   |  =  |  [   |   ]   |  PIPE  |
+// |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |      |     |      |   \    |  RET  |
+// | FN   |      |      |      |      |      |      |      |     |      |         |      | 
+			bindings = <
+	&kp GRAVE &kp N1 &kp N2 &kp N3 &kp N4   &kp N5      &kp N6  &kp N7 &kp N8 &kp N9 &kp N0 &trans
+	&trans    &kp F1   &kp F2      &kp F3    &kp F4      &kp F5     &kp F6    &kp MINUS &kp EQUAL &kp LEFT_BRACKET  &kp RIGHT_BRACKET &kp PIPE
+	&trans    &kp F7   &kp F8      &kp F9    &kp F10     &kp F11    &kp F12   &trans          &trans      &trans	&kp BACKSLASH  &kp RET
+	&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  
+			>;
+		};
+
+		nav_layer {
+// -----------------------------------------------------------------------------------------
+// |      |      |NEXT_WORD(W)|      |      |      |      |      |     |      |       |        |
+// |      |  F1  |  F2  |  F3  |  F4  |  F5  |LEFT(H)| DOWN | UP |  RIGHT |   ]   |  PIPE  |
+// |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |      |     |      |   \   |  RET  |
+// | FN   |      |      |      |      |      |      |      |     |      |         |      | 
+			bindings = <
+	&trans  &trans  &kp LC(RIGHT)  &trans &trans &trans &kp HOME &kp PAGE_UP  &kp END &trans &trans &trans
+	&trans  &trans  &trans  &trans  &trans  &trans   &kp LEFT     &kp DOWN &kp UP &kp RIGHT &trans &trans
+	&trans  &trans  &trans  &trans  &trans  &LC(LEFT) &trans  &trans  &trans  &trans  &trans  &trans  &trans  
+	&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  
+			>;
+		};
+
 	};
 };
